@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>AshGuard</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e7e7e7;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #161515, #3a3a3a); 
+      color: #fff;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .header .logo i {
+      font-size: 24px;
+      margin-right: 10px;
+    }
+
+    .header .logo span {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .header .status {
+      font-size: 16px;
+    }
+
+  .container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 20px;
+    padding: 20px;
+    grid-template-areas:
+      "sensor device"
+      "history history"
+      "map map";
+  }
+      /* Styling untuk Riwayat Kejadian */
+    .history {
+    background: linear-gradient(135deg, #808080, #3e3e3e); 
+    grid-area: history;
+    overflow-y: auto; 
+    max-height: 230px; /* Sesuaikan tinggi dengan Sensor Status */
+  }
+
+    .history table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .history th, .history td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    .history th {
+      background-color: #a9a9a9;
+    }
+
+    .history tr:nth-child(even) {
+      background-color: #d3d3d3;
+    }
+    .box {
+      background: linear-gradient(to left, #fe7f00, #d16a0a); 
+      border-radius: 10px;
+      box-shadow: 0 1px 5px #242424; 
+      padding: 20px;
+      color: #fff;
+    }
+
+    .box h2 {
+      margin-top: 0;
+    }
+
+    /* Animasi Hover untuk Sensor */
+    .sensor-status .sensor {
+      grid-area: sensor;
+      background: linear-gradient(135deg, #fa9127, #fcba3e);
+      box-shadow: 0 0px 10px #915a12;
+      border-radius: 10px;
+      margin: 10px 0;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background 0.3s ease-in-out;
+    }
+
+    .sensor-status .sensor:hover {
+      transform: scale(1.0); /* Zoom saat hover */
+      box-shadow: 0 10px 20px #773517; 
+      background: linear-gradient(135deg, #ffc861, #ff9f40); 
+    }
+
+    .sensor-status .sensor i {
+      font-size: 36px;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .sensor-status .sensor:hover i {
+      transform: rotate(10deg); /* Efek ikon berputar sedikit saat hover */
+    }
+
+    .sensor-status .sensor div {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* Animasi Hover untuk Kontrol Kamera */
+    .device-control .control {
+      grid-area: device;
+      background: linear-gradient(135deg, #fa9127, #fcba3e);
+      box-shadow: 0 0px 10px #915a12;
+      border-radius: 10px;
+      margin: 10px 0;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background 0.3s ease-in-out;
+    }
+
+    .device-control .control:hover {
+      transform: scale(1.0); /* Zoom saat hover */
+      box-shadow: 0 10px 20px #773517; /* Shadow lebih dalam */
+      background: linear-gradient(135deg, #ffc861, #ff9f40);
+    }
+
+    .device-control .control i {
+      font-size: 36px;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .device-control .control:hover i {
+      transform: rotate(-10deg); /* Ikon berputar sedikit ke kiri */
+    }
+
+    .device-control .control div {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* Teks Tambahan di Bawah Sensor dan Kontrol Kamera */
+    .sensor-text {
+      margin-top: 7px;
+      font-size: 1px;
+      color: #f0f0f0;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .fire-map {
+      background: linear-gradient(to left, #ff0000, #ff5b15); 
+      grid-area: map;
+    }
+
+    .fire-map iframe {
+      width: 100%;
+      height: 400px;
+      border-radius: 10px;
+      border: 0;
+    }
+
+    /* Styling untuk Riwayat Kejadian */
+    .history {
+    background: linear-gradient(135deg, #808080, #3e3e3e); 
+    grid-area: history;
+    overflow-y: auto; 
+    max-height: 230px; /* Sesuaikan tinggi dengan Sensor Status */
+  }
+
+    .history table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .history th, .history td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    .history th {
+      background-color: #a9a9a9;
+    }
+
+    .history tr:nth-child(even) {
+      background-color: #d3d3d3;
+    }
+
+    .footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <i class="fas fa-fire"></i>
+      <span>AshGuard</span>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+  <div class="container">
+    <div class="box sensor-status">
+      <h2>Sensor Status</h2>
+      <div class="sensor">
+        <i class="fas fa-thermometer-half"></i>
+        <div>Temperature : <span id="temp-sensor">-</span></div>
+        <div>Status : <span id="stats-sensor-1">-</span></div>
+      </div>
+      <div class="sensor">
+        <i class="fas fa-cloud"></i>
+        <div>Asap : <span id="smoke-sensor">-</span></div>
+        <div>Status : <span id="stats-sensor-2">-</span></div>
+      </div>
+      <div class="sensor">
+        <i class="fas fa-shower"></i>
+        <div>Kelembaban : <span id="lemb-sensor">-</span></div>
+      </div>
+    </div>
+    <div class="box device-control">
+      <h2>Device Control</h2>
+      <div class="control" onclick="toggleDevice('camera')">
+        <i class="fas fa-camera"></i>
+        <div>Kamera</div>
+        <div>Status : <span id="stats-sensor-3">-</span></div>
+      </div>
+    </div>    
+    <div class="box fire-map">
+      <h2>Lokasi Kamera</h2>
+      <iframe
+        src=https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3422.490035060957!2d119.63123381228797!3d-4.025918048244048!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d95bb39073b33f3%3A0x9c734d39dc115087!2sInstitut%20Teknologi%20Bacharuddin%20Jusuf%20Habibie%20-%20Kampus%202!5e1!3m2!1sid!2sid!4v1735386574643!5m2!1sid!2sid"
+        allowfullscreen=""
+        loading="lazy">
+      </iframe>
+    </div>
+    <div class="box history">
+      <h2>Riwayat Kejadian</h2>
+      <table id="history-table">
+        <tr>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Location</th>
+          <th>Status</th>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import modular Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+  
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB-AjMmsdYxidobAF03fHzFreM9VNgdfAY",
+      authDomain: "proket-43fc0.firebaseapp.com",
+      databaseURL: "https://proket-43fc0-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "proket-43fc0",
+      storageBucket: "proket-43fc0.appspot.com",
+      messagingSenderId: "1089981743730",
+      appId: "1:1089981743730:web:b1c732d5aea6d3b08478eb",
+      measurementId: "G-MNWESKMVY1"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+  
+    // References 
+    const tempSensorEl = document.getElementById('temp-sensor');
+    const smokeSensorEl = document.getElementById('smoke-sensor');
+    const lembSensorEl = document.getElementById('lemb-sensor');
+const Status1SensorEl = document.getElementById('stats-sensor-1');
+const Status2SensorEl = document.getElementById('stats-sensor-2'); 
+const Status3SensorEl = document.getElementById('stats-sensor-3'); 
+
+// Referensi ke data Firebase
+const tempRef = ref(database, 'DATA_SENSOR/SUHU');
+const smokeRef = ref(database, 'DATA_SENSOR/LEVEL_ASAP');
+const lembRef = ref(database, 'DATA_SENSOR/KELEMBABAN');
+const Status1Ref = ref(database, 'STATUS_SUHU');
+const Status2Ref = ref(database, 'STATUS_ASAP');
+const Status3Ref = ref(database, 'status_kamera/fire_detected');
+
+// Listen to temperature sensor updates
+onValue(tempRef, (snapshot) => {
+  const temp = snapshot.val();
+  tempSensorEl.textContent = temp || 'Tidak Ada Data';
+});
+
+// Listen to smoke sensor updates
+onValue(smokeRef, (snapshot) => {
+  const smoke = snapshot.val();
+  smokeSensorEl.textContent = smoke || 'Tidak Ada Data';
+});
+
+// Listen to humidity sensor updates
+onValue(lembRef, (snapshot) => {
+  const lemb = snapshot.val();
+  lembSensorEl.textContent = lemb || 'Tidak Ada Data';
+});
+
+// Listen to status sensor 1 updates
+onValue(Status1Ref, (snapshot) => {
+  const stats = snapshot.val();
+  Status1SensorEl.textContent = stats || 'Tidak Ada Data';
+});
+
+// Listen to status sensor 2 updates
+onValue(Status2Ref, (snapshot) => {
+  const stats = snapshot.val();
+  Status2SensorEl.textContent = stats || 'Tidak Ada Data';
+});
+
+onValue(Status3Ref, (snapshot) => {
+  const stats = snapshot.val();
+  console.log("Received Status 3: ", stats); // Debugging output
+  if (stats === true) {
+    Status3SensorEl.textContent = "Fire Detected: ADA";
+  } else if (stats === false) {
+    Status3SensorEl.textContent = "TIDAK ADA";
+  } else {
+    Status3SensorEl.textContent = "Tidak Ada Data";
+  }
+});
+
+  </script>
+</body>
+</html>
